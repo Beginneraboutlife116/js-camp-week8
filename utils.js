@@ -84,30 +84,48 @@ function validateOrderUser(data) {
  * 驗證購物車數量
  * @param {number} quantity - 數量
  * @returns {Object} - { isValid: boolean, error?: string }
- * 
+ *
  * 驗證規則：
  * - 必須是正整數
  * - 不可小於 1
  * - 不可大於 99
  */
 function validateCartQuantity(quantity) {
-  // 請實作此函式
+	const q = Number(quantity);
+	const MIN = 1;
+	const MAX = 99;
+	let error = '';
+
+	if (quantity === null || Number.isNaN(q)) {
+		error = '需為有效數字';
+	} else if (!q || !Number.isInteger(q)) {
+		error = '必須是正整數';
+	} else if (q < MIN) {
+		error = `不可小於 ${MIN}`;
+	} else if (q > MAX) {
+		error = `不可大於 ${MAX}`;
+	}
+
+	return {
+		isValid: error.length === 0,
+		error,
+	}
 }
 
 /**
  * 格式化金額
  * @param {number} amount - 金額
  * @returns {string} - 格式化後的金額
- * 
+ *
  * 格式化規則：
  * - 加上 "NT$ " 前綴
  * - 數字需要千分位逗號分隔（例如：1000 → 1,000）
  * - 使用台灣格式（zh-TW）
- * 
+ *
  * 範例：
  * formatCurrency(1000) → "NT$ 1,000"
  * formatCurrency(1234567) → "NT$ 1,234,567"
- * 
+ *
  */
 function formatCurrency(amount) {
 	const formatted = new Intl.NumberFormat('zh-TW').format(amount);

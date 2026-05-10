@@ -32,7 +32,21 @@ async function fetchProducts() {
  * @returns {Promise<Object>} - 回傳 { carts: [...], total: 數字, finalTotal: 數字 }
  */
 async function fetchCart() {
-  // 請實作此函式
+	try {
+		const { data: {
+			carts,
+			total,
+			finalTotal,
+		} } = await customerApi.get('/carts');
+
+		return {
+			carts,
+			total,
+			finalTotal,
+		}
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -42,7 +56,26 @@ async function fetchCart() {
  * @returns {Promise<Object>} - 回傳購物車資料
  */
 async function addToCart(productId, quantity) {
-  // 請實作此函式
+	try {
+		const { data: {
+			carts,
+			total,
+			finalTotal,
+		} } = await customerApi.post('/carts', {
+			data: {
+				productId,
+				quantity,
+			}
+		})
+
+		return {
+			carts,
+			total,
+			finalTotal,
+		};
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -52,7 +85,26 @@ async function addToCart(productId, quantity) {
  * @returns {Promise<Object>} - 回傳購物車資料
  */
 async function updateCartItem(cartId, quantity) {
-  // 請實作此函式
+	try {
+		const { data: {
+			carts,
+			total,
+			finalTotal,
+		} } = await customerApi.patch('/carts', {
+			data: {
+				id: cartId,
+				quantity,
+			}
+		});
+
+		return {
+			carts,
+			total,
+			finalTotal,
+		}
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -61,7 +113,21 @@ async function updateCartItem(cartId, quantity) {
  * @returns {Promise<Object>} - 回傳購物車資料
  */
 async function deleteCartItem(cartId) {
-  // 請實作此函式
+	try {
+		const { data: {
+			carts,
+			total,
+			finalTotal,
+		} } = await customerApi.delete(`/carts/${cartId}`);
+
+		return {
+			carts,
+			total,
+			finalTotal,
+		}
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -69,7 +135,21 @@ async function deleteCartItem(cartId) {
  * @returns {Promise<Object>} - 回傳購物車資料
  */
 async function clearCart() {
-  // 請實作此函式
+	try {
+		const { data: {
+			carts,
+			total,
+			finalTotal,
+		} } = await customerApi.delete('/carts');
+
+		return {
+			carts,
+			total,
+			finalTotal,
+		}
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**

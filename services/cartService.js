@@ -10,8 +10,9 @@ const { validateCartQuantity, formatCurrency } = require('../utils');
  * @returns {Promise<Object>}
  */
 async function getCart() {
-  // 請實作此函式
-  // 提示：呼叫 fetchCart() 取得購物車資料並回傳
+	const data = await fetchCart();
+
+	return data;
 }
 
 /**
@@ -21,10 +22,28 @@ async function getCart() {
  * @returns {Promise<Object>}
  */
 async function addProductToCart(productId, quantity) {
-  // 請實作此函式
-  // 提示：先用 utils validateCartQuantity() 驗證數量，驗證失敗時回傳 { success: false, error: ... }
-  // 驗證通過後，呼叫 addToCart() 加入購物車
-  // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
+	const { isValid, error } = validateCartQuantity(quantity);
+
+	if (!isValid) {
+		return {
+			success: isValid,
+			error,
+		}
+	}
+
+	if (!productId) {
+		return {
+			success: false,
+			error: 'id 必填',
+		}
+	}
+
+	const data = await addToCart(productId, quantity);
+
+	return {
+		success: true,
+		data,
+	};
 }
 
 /**
@@ -34,10 +53,28 @@ async function addProductToCart(productId, quantity) {
  * @returns {Promise<Object>}
  */
 async function updateProduct(cartId, quantity) {
-  // 請實作此函式
-  // 提示：先用 utils validateCartQuantity() 驗證數量，驗證失敗時回傳 { success: false, error: ... }
-  // 驗證通過後，呼叫 updateCartItem() 更新數量
-  // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
+	const { isValid, error } = validateCartQuantity(quantity);
+
+	if (!isValid) {
+		return {
+			success: isValid,
+			error,
+		}
+	}
+
+	if (!cartId) {
+		return {
+			success: false,
+			error: 'id 必填',
+		}
+	}
+
+	const data = await updateCartItem(cartId, quantity);
+
+	return {
+		success: true,
+		data,
+	};
 }
 
 /**
@@ -46,9 +83,19 @@ async function updateProduct(cartId, quantity) {
  * @returns {Promise<Object>}
  */
 async function removeProduct(cartId) {
-  // 請實作此函式
-  // 提示：呼叫 deleteCartItem()
-  // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
+	if (!cartId) {
+		return {
+			success: false,
+			error: 'id 必填',
+		}
+	}
+
+	const data = await deleteCartItem(cartId);
+
+	return {
+		success: true,
+		data,
+	}
 }
 
 /**
@@ -56,9 +103,12 @@ async function removeProduct(cartId) {
  * @returns {Promise<Object>}
  */
 async function emptyCart() {
-  // 請實作此函式
-  // 提示：呼叫 clearCart()
-  // 回傳格式：{ success: true, data: ... } 
+	const data = await clearCart();
+
+	return {
+		success: true,
+		data,
+	}
 }
 
 /**
@@ -66,9 +116,17 @@ async function emptyCart() {
  * @returns {Promise<Object>}
  */
 async function getCartTotal() {
-  // 請實作此函式
-  // 提示：呼叫 fetchCart() 取得購物車資料
-  // 回傳格式：{ total: 原始金額, finalTotal: 折扣後金額, itemCount: 商品筆數 }
+	const {
+		carts,
+		total,
+		finalTotal,
+	} = await fetchCart();
+
+	return {
+		total,
+		finalTotal,
+		itemCount: carts.length,
+	}
 }
 
 /**
@@ -76,28 +134,70 @@ async function getCartTotal() {
  * @param {Object} cart - 購物車資料
  */
 function displayCart(cart) {
-  // 請實作此函式
-  // 提示：先判斷購物車是否為空（cart.carts 不存在或長度為 0），若空則輸出「購物車是空的」
-  // 會使用到 utils formatCurrency() 來格式化金額
-  //
-  // 預期輸出格式：
-  // 購物車內容：
-  // ----------------------------------------
-  // 1. 產品名稱
-  //    數量：2
-  //    單價：NT$ 800
-  //    小計：NT$ 1,600
-  // ----------------------------------------
-  // 商品總計：NT$ 1,600
-  // 折扣後金額：NT$ 1,600
+	const {
+		carts,
+		total,
+		finalTotal,
+	} = cart;
+
+	if (!carts.length) {
+		console.log('購物車是空的');
+		return;
+	}
+
+	const formattedCarts = carts.map(item => {
+		const {
+			quantity,
+			product: {
+				title,
+				price,
+			}
+		} = item;
+
+		return {
+			title,
+			quantity,
+			price: formatCurrency(price),
+			subtotal: formatCurrency(price * quantity),
+		}
+	});
+
+	let print = `
+		購物車內容：
+		----------------------------------------
+	`;
+
+	formattedCarts.forEach(({
+		title,
+		quantity,
+		price,
+		subtotal,
+	}, index) => {
+		const printItem = `
+		${index + 1} ${title}
+			數量：${quantity}
+			單價：${price}
+			小計：${subtotal}
+		----------------------------------------
+		`;
+
+		print += printItem;
+	});
+
+	print += `
+		商品總計：${total}
+		折扣後金額：${finalTotal}
+	`;
+
+	console.log(print);
 }
 
 module.exports = {
-  getCart,
-  addProductToCart,
-  updateProduct,
-  removeProduct,
-  emptyCart,
-  getCartTotal,
-  displayCart
+	getCart,
+	addProductToCart,
+	updateProduct,
+	removeProduct,
+	emptyCart,
+	getCartTotal,
+	displayCart
 };
