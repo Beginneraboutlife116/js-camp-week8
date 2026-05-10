@@ -77,7 +77,7 @@ function displayProducts(products) {
 			title,
 			category,
 			origin_price: formatCurrency(origin_price),
-			price: `${formatCurrency(price)}（${getDiscountRate(product)}折）`
+			price: `${formatCurrency(price)}（${getDiscountRate(product)}）`
 		}
 	});
 

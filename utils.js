@@ -40,11 +40,7 @@ function getDiscountRate(product) {
 function getAllCategories(products) {
 	const categorySet = new Set();
 
-	products.forEach(product => {
-		if (!categorySet.has(product.category)) {
-			categorySet.add(product.category);
-		}
-	})
+	products.forEach(product => categorySet.add(product.category))
 
 	return Array.from(categorySet);
 }
@@ -109,20 +105,20 @@ function validateOrderUser(data) {
 	const telRegex = /^09\d{8}$/;
 	const paymentMethodSet = new Set(['ATM', 'Credit Card', 'Apple Pay']);
 
-	if (!name) {
-		errors.push('不可為空');
+	if (!name || !name.trim()) {
+		errors.push('姓名不可為空');
 	}
 
-	if (!tel || !telRegex.test(tel)) {
+	if (!tel || !tel.trim() || !telRegex.test(tel)) {
 		errors.push('必須是 09 開頭的 10 位數字');
 	}
 
-	if (!email || !email.includes('@')) {
+	if (!email || !email.trim() || !email.includes('@')) {
 		errors.push('必須包含 @ 符號');
 	}
 
-	if (!address) {
-		errors.push('不可為空');
+	if (!address || !address.trim()) {
+		errors.push('地址不可為空');
 	}
 
 	if (!payment || !paymentMethodSet.has(payment)) {

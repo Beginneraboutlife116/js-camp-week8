@@ -213,7 +213,7 @@ async function updateOrderStatus(orderId, isPaid) {
 		} } = await adminApi.put('/orders', {
 			data: {
 				id: orderId,
-				padi: isPaid,
+				paid: isPaid,
 			}
 		});
 

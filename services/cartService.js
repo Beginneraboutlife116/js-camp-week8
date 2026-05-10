@@ -22,19 +22,19 @@ async function getCart() {
  * @returns {Promise<Object>}
  */
 async function addProductToCart(productId, quantity) {
+	if (!productId) {
+		return {
+			success: false,
+			error: 'id 為必填',
+		}
+	}
+
 	const { isValid, error } = validateCartQuantity(quantity);
 
 	if (!isValid) {
 		return {
 			success: isValid,
 			error,
-		}
-	}
-
-	if (!productId) {
-		return {
-			success: false,
-			error: 'id 為必填',
 		}
 	}
 
@@ -53,19 +53,19 @@ async function addProductToCart(productId, quantity) {
  * @returns {Promise<Object>}
  */
 async function updateProduct(cartId, quantity) {
+	if (!cartId) {
+		return {
+			success: false,
+			error: 'id 為必填',
+		}
+	}
+
 	const { isValid, error } = validateCartQuantity(quantity);
 
 	if (!isValid) {
 		return {
 			success: isValid,
 			error,
-		}
-	}
-
-	if (!cartId) {
-		return {
-			success: false,
-			error: 'id 為必填',
 		}
 	}
 
@@ -185,8 +185,8 @@ function displayCart(cart) {
 	});
 
 	print += `
-		商品總計：${total}
-		折扣後金額：${finalTotal}
+		商品總計：${formatCurrency(total)}
+		折扣後金額：${formatCurrency(finalTotal)}
 	`;
 
 	console.log(print);
