@@ -158,7 +158,15 @@ async function clearCart() {
  * @returns {Promise<Object>}
  */
 async function createOrder(userInfo) {
-  // 請實作此函式
+	try {
+		const { data } = await customerApi.post('/orders', {
+			data: userInfo
+		})
+
+		return data;
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 // ========== 管理員 API ==========
@@ -166,17 +174,29 @@ async function createOrder(userInfo) {
 /**
  * 管理員 API 需加上認證
  * 提示：
-    headers: {
-      authorization: ADMIN_TOKEN
-    }
+	headers: {
+	  authorization: ADMIN_TOKEN
+	}
  */
+const adminApi = axios.create({
+	baseURL: `${BASE_URL}/api/livejs/v1/admin/${API_PATH}`,
+	headers: { Authorization: ADMIN_TOKEN },
+})
 
 /**
  * 取得訂單列表
  * @returns {Promise<Array>}
  */
 async function fetchOrders() {
-  // 請實作此函式
+	try {
+		const { data: {
+			orders,
+		} } = await adminApi.get('/orders');
+
+		return orders;
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -186,7 +206,20 @@ async function fetchOrders() {
  * @returns {Promise<Object>}
  */
 async function updateOrderStatus(orderId, isPaid) {
-  // 請實作此函式
+	try {
+		const { data: {
+			orders,
+		} } = await adminApi.put('/orders', {
+			data: {
+				id: orderId,
+				padi: isPaid,
+			}
+		});
+
+		return orders;
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -195,7 +228,15 @@ async function updateOrderStatus(orderId, isPaid) {
  * @returns {Promise<Object>}
  */
 async function deleteOrder(orderId) {
-  // 請實作此函式
+	try {
+		const { data: {
+			orders,
+		} } = await adminApi.delete(`/orders/${orderId}`);
+
+		return orders;
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 module.exports = {

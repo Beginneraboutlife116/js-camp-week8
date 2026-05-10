@@ -47,8 +47,7 @@ function getAllCategories(products) {
  * @returns {string} - 格式 'YYYY/MM/DD HH:mm'，例如 '2024/01/01 08:00'
  */
 function formatDate(timestamp) {
-  // 請實作此函式
-  // 提示：dayjs.unix...
+	return dayjs.unix(timestamp).format('YYYY/MM/DD HH:mm');
 }
 
 /**
@@ -57,11 +56,14 @@ function formatDate(timestamp) {
  * @returns {string} - 例如 '3 天前'
  */
 function getDaysAgo(timestamp) {
-  // 請實作此函式
-  // 提示：
-  // 1. 用 dayjs() 取得今天
-  // 2. 用 dayjs.unix(timestamp) 取得日期
-  // 3. 用 .diff() 計算天數差異
+	const now = dayjs();
+	const diff = now.diff(dayjs.unix(timestamp), 'day');
+
+	if (!diff) {
+		return '今天'
+	}
+
+	return `${diff} 天前`;
 }
 
 /**
@@ -77,7 +79,52 @@ function getDaysAgo(timestamp) {
  * - payment: 必須是 'ATM', 'Credit Card', 'Apple Pay' 其中之一
  */
 function validateOrderUser(data) {
-  // 請實作此函式
+	const errors = [];
+
+	if (!data) {
+		errors.push('資料不可為空');
+
+		return {
+			isValid: false,
+			errors,
+		}
+	}
+
+	const {
+		name,
+		tel,
+		email,
+		address,
+		payment,
+	} = data;
+
+	const telRegex = /^09\d{8}$/;
+	const paymentMethodSet = new Set(['ATM', 'Credit Card', 'Apple Pay']);
+
+	if (!name) {
+		errors.push('不可為空');
+	}
+
+	if (!tel || !telRegex.test(tel)) {
+		errors.push('必須是 09 開頭的 10 位數字');
+	}
+
+	if (!email || !email.includes('@')) {
+		errors.push('必須包含 @ 符號');
+	}
+
+	if (!address) {
+		errors.push('不可為空');
+	}
+
+	if (!payment || !paymentMethodSet.has(payment)) {
+		errors.push('必須是 "ATM", "Credit Card", "Apple Pay" 其中之一');
+	}
+
+	return {
+		isValid: errors.length === 0,
+		errors,
+	}
 }
 
 /**
