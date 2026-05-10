@@ -51,15 +51,8 @@ async function getProductById(productId) {
  */
 async function getCategories() {
 	const products = await fetchProducts();
-	const categorySet = new Set();
 
-	products.forEach(product => {
-		if (!categorySet.has(product.category)) {
-			categorySet.add(product.category);
-		}
-	})
-
-	return Array.from(categorySet);
+	return getAllCategories(products);
 }
 
 /**
@@ -67,6 +60,11 @@ async function getCategories() {
  * @param {Array} products - 產品陣列
  */
 function displayProducts(products) {
+	if (!products.length) {
+		console.log('產品列表是空的');
+		return;
+	}
+
 	const formattedProducts = products.map(product => {
 		const {
 			title,

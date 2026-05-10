@@ -38,7 +38,15 @@ function getDiscountRate(product) {
  * @returns {Array} - 分類陣列
  */
 function getAllCategories(products) {
-  // 請實作此函式
+	const categorySet = new Set();
+
+	products.forEach(product => {
+		if (!categorySet.has(product.category)) {
+			categorySet.add(product.category);
+		}
+	})
+
+	return Array.from(categorySet);
 }
 
 /**
@@ -70,7 +78,7 @@ function getDaysAgo(timestamp) {
  * 驗證訂單使用者資料
  * @param {Object} data - 使用者資料
  * @returns {Object} - { isValid: boolean, errors: string[] }
- * 
+ *
  * 驗證規則：
  * - name: 不可為空
  * - tel: 必須是 09 開頭的 10 位數字

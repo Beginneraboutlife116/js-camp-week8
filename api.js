@@ -11,6 +11,7 @@ const { handleAxiosError } = require('./utils');
 const customerApi = axios.create({
 	baseURL: `${BASE_URL}/api/livejs/v1/customer/${API_PATH}`,
 })
+
 /**
  * 取得產品列表
  * @returns {Promise<Array>}
