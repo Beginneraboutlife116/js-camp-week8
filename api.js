@@ -5,7 +5,16 @@
 const axios = require('axios');
 const { API_PATH, BASE_URL, ADMIN_TOKEN } = require('./config');
 
-const { handleAxiosError } = require('./utils');
+function handleAxiosError(error) {
+	if (!axios.isAxiosError(error)) {
+		throw error;
+	}
+
+	const message = error.response?.data?.message || error.message;
+	const wrapped = new Error(message);
+	wrapped.status = error.response?.status;
+	throw wrapped;
+}
 
 // ========== 客戶端 API ==========
 const customerApi = axios.create({

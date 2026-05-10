@@ -2,8 +2,6 @@
 // 訂單服務
 // ========================================
 
-const dayjs = require('dayjs');
-
 const { createOrder, fetchOrders, updateOrderStatus, deleteOrder } = require('../api');
 const { validateOrderUser, formatDate, getDaysAgo, formatCurrency } = require('../utils');
 
@@ -198,8 +196,6 @@ function displayOrders(orders) {
 		createdAt,
 		daysAgo,
 	}, index) => {
-		const formattedCreatedAt = dayjs(createdAt).format('YYYY/MM/DD');
-
 		let printOrder = `
 		訂單 ${index + 1}
 		----------------------------------------
@@ -210,7 +206,7 @@ function displayOrders(orders) {
 		付款方式：${payment}
 		訂單金額：${totalFormatted}
 		付款狀態：${paidText}
-		建立時間：${formattedCreatedAt} (${daysAgo})
+		建立時間：${createdAt} (${daysAgo})
 		----------------------------------------
 		商品明細：
 		`;

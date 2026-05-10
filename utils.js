@@ -2,19 +2,7 @@
 // 工具函式
 // ========================================
 
-const axios = require('axios');
 const dayjs = require('dayjs');
-
-function handleAxiosError(error) {
-	if (!axios.isAxiosError(error)) {
-		throw error;
-	}
-
-	const message = error.response?.data?.message || error.message;
-	const wrapped = new Error(message);
-	wrapped.status = error.response?.status;
-	throw wrapped;
-}
 
 /**
  * 計算產品折扣率
