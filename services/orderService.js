@@ -68,7 +68,7 @@ async function updatePaymentStatus(orderId, isPaid) {
 	if (!orderId) {
 		return {
 			success: false,
-			error: 'id 為必填'
+			error: 'id 為必填',
 		}
 	}
 
@@ -89,7 +89,7 @@ async function removeOrder(orderId) {
 	if (!orderId) {
 		return {
 			success: false,
-			error: 'id 為必填'
+			error: 'id 為必填',
 		}
 	}
 
@@ -121,7 +121,7 @@ function formatOrder(order) {
 	if (!order) {
 		return {
 			success: false,
-			error: '需傳入一個 order'
+			error: '需傳入一個 order',
 		}
 	}
 

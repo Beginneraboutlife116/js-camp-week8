@@ -34,7 +34,7 @@ async function addProductToCart(productId, quantity) {
 	if (!productId) {
 		return {
 			success: false,
-			error: 'id 必填',
+			error: 'id 為必填',
 		}
 	}
 
@@ -65,7 +65,7 @@ async function updateProduct(cartId, quantity) {
 	if (!cartId) {
 		return {
 			success: false,
-			error: 'id 必填',
+			error: 'id 為必填',
 		}
 	}
 
@@ -86,7 +86,7 @@ async function removeProduct(cartId) {
 	if (!cartId) {
 		return {
 			success: false,
-			error: 'id 必填',
+			error: 'id 為必填',
 		}
 	}
 
