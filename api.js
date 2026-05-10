@@ -5,15 +5,26 @@
 const axios = require('axios');
 const { API_PATH, BASE_URL, ADMIN_TOKEN } = require('./config');
 
-// ========== 客戶端 API ==========
+const { handleAxiosError } = require('./utils');
 
+// ========== 客戶端 API ==========
+const customerApi = axios.create({
+	baseURL: `${BASE_URL}/api/livejs/v1/customer/${API_PATH}`,
+})
 /**
  * 取得產品列表
  * @returns {Promise<Array>}
  */
 async function fetchProducts() {
-  // 請實作此函式
-  // 回傳 response.data.products
+	try {
+		const { data: {
+			products
+		} } = await customerApi.get('/products');
+
+		return products;
+	} catch (error) {
+		return handleAxiosError(error);
+	}
 }
 
 /**
@@ -108,14 +119,14 @@ async function deleteOrder(orderId) {
 }
 
 module.exports = {
-  fetchProducts,
-  fetchCart,
-  addToCart,
-  updateCartItem,
-  deleteCartItem,
-  clearCart,
-  createOrder,
-  fetchOrders,
-  updateOrderStatus,
-  deleteOrder
+	fetchProducts,
+	fetchCart,
+	addToCart,
+	updateCartItem,
+	deleteCartItem,
+	clearCart,
+	createOrder,
+	fetchOrders,
+	updateOrderStatus,
+	deleteOrder
 };

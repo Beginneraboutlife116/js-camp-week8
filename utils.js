@@ -2,7 +2,19 @@
 // 工具函式
 // ========================================
 
+const axios = require('axios');
 const dayjs = require('dayjs');
+
+function handleAxiosError(error) {
+	if (axios.isAxiosError(error)) {
+		return {
+			status: error.response?.status,
+			message: error.message,
+		}
+	}
+
+	throw error;
+}
 
 /**
  * 計算產品折扣率
@@ -10,7 +22,14 @@ const dayjs = require('dayjs');
  * @returns {string} - 例如 '8折'
  */
 function getDiscountRate(product) {
-  // 請實作此函式
+	const {
+		price,
+		origin_price,
+	} = product;
+
+	const rate = Math.round(price / origin_price * 10);
+
+	return `${rate}折`;
 }
 
 /**
@@ -91,15 +110,17 @@ function validateCartQuantity(quantity) {
  * 
  */
 function formatCurrency(amount) {
-  // 請實作此函式
+	const formatted = new Intl.NumberFormat('zh-TW').format(amount);
+	return `NT$ ${formatted}`;
 }
 
 module.exports = {
-  getDiscountRate,
-  getAllCategories,
-  formatDate,
-  getDaysAgo,
-  validateOrderUser,
-  validateCartQuantity,
-  formatCurrency
+	handleAxiosError,
+	getDiscountRate,
+	getAllCategories,
+	formatDate,
+	getDaysAgo,
+	validateOrderUser,
+	validateCartQuantity,
+	formatCurrency
 };
