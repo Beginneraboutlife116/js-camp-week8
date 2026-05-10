@@ -161,7 +161,9 @@ async function clearCart() {
 async function createOrder(userInfo) {
 	try {
 		const { data } = await customerApi.post('/orders', {
-			data: userInfo
+			data: {
+				user: userInfo,
+			}
 		})
 
 		return data;

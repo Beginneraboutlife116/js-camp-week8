@@ -17,16 +17,23 @@ async function placeOrder(userInfo) {
 
 	if (!isValid) {
 		return {
-			success: isValid,
+			success: false,
 			errors,
 		}
 	}
 
-	const order = await createOrder(userInfo);
+	try {
+		const order = await createOrder(userInfo);
 
-	return {
-		success: true,
-		data: order,
+		return {
+			success: true,
+			data: order,
+		}
+	} catch (err) {
+		return {
+			success: false,
+			errors: [err.message],
+		}
 	}
 }
 
@@ -74,11 +81,18 @@ async function updatePaymentStatus(orderId, isPaid) {
 		}
 	}
 
-	const orders = await updateOrderStatus(orderId, isPaid);
+	try {
+		const orders = await updateOrderStatus(orderId, isPaid);
 
-	return {
-		success: true,
-		data: orders,
+		return {
+			success: true,
+			data: orders,
+		}
+	} catch (err) {
+		return {
+			success: false,
+			error: err.message,
+		}
 	}
 }
 
@@ -95,11 +109,18 @@ async function removeOrder(orderId) {
 		}
 	}
 
-	const orders = await deleteOrder(orderId);
+	try {
+		const orders = await deleteOrder(orderId);
 
-	return {
-		success: true,
-		data: orders,
+		return {
+			success: true,
+			data: orders,
+		}
+	} catch (err) {
+		return {
+			success: false,
+			error: err.message,
+		}
 	}
 }
 

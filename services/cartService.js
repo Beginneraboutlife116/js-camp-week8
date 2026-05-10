@@ -33,17 +33,24 @@ async function addProductToCart(productId, quantity) {
 
 	if (!isValid) {
 		return {
-			success: isValid,
+			success: false,
 			error,
 		}
 	}
 
-	const data = await addToCart(productId, quantity);
+	try {
+		const data = await addToCart(productId, quantity);
 
-	return {
-		success: true,
-		data,
-	};
+		return {
+			success: true,
+			data,
+		};
+	} catch (err) {
+		return {
+			success: false,
+			error: err.message,
+		}
+	}
 }
 
 /**
@@ -64,17 +71,24 @@ async function updateProduct(cartId, quantity) {
 
 	if (!isValid) {
 		return {
-			success: isValid,
+			success: false,
 			error,
 		}
 	}
 
-	const data = await updateCartItem(cartId, quantity);
+	try {
+		const data = await updateCartItem(cartId, quantity);
 
-	return {
-		success: true,
-		data,
-	};
+		return {
+			success: true,
+			data,
+		};
+	} catch (err) {
+		return {
+			success: false,
+			error: err.message,
+		}
+	}
 }
 
 /**
@@ -90,11 +104,18 @@ async function removeProduct(cartId) {
 		}
 	}
 
-	const data = await deleteCartItem(cartId);
+	try {
+		const data = await deleteCartItem(cartId);
 
-	return {
-		success: true,
-		data,
+		return {
+			success: true,
+			data,
+		}
+	} catch (err) {
+		return {
+			success: false,
+			error: err.message,
+		}
 	}
 }
 
@@ -103,11 +124,18 @@ async function removeProduct(cartId) {
  * @returns {Promise<Object>}
  */
 async function emptyCart() {
-	const data = await clearCart();
+	try {
+		const data = await clearCart();
 
-	return {
-		success: true,
-		data,
+		return {
+			success: true,
+			data,
+		}
+	} catch (err) {
+		return {
+			success: false,
+			error: err.message,
+		}
 	}
 }
 

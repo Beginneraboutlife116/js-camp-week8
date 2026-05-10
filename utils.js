@@ -6,14 +6,14 @@ const axios = require('axios');
 const dayjs = require('dayjs');
 
 function handleAxiosError(error) {
-	if (axios.isAxiosError(error)) {
-		return {
-			status: error.response?.status,
-			message: error.message,
-		}
+	if (!axios.isAxiosError(error)) {
+		throw error;
 	}
 
-	throw error;
+	const message = error.response?.data?.message || error.message;
+	const wrapped = new Error(message);
+	wrapped.status = error.response?.status;
+	throw wrapped;
 }
 
 /**
